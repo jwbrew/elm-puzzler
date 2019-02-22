@@ -70,6 +70,7 @@ Recommendation: use `elm-live` with `-debug` on to enable the time-travelling
 debugger when developing solutions.
 
 `npm i -g elm-live`
+
 `elm-live Main.elm -- --debug`
 
 ## Puzzles

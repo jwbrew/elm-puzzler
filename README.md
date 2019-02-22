@@ -87,7 +87,7 @@ The demo solution always loses. Try to find a way to make it win.
 
 #### Writing your own solution
 1. Create a file in src/solutions eg `src/solutions/MyNoughtsCrossesSolution.elm`
-1. Import `Puzzler.Solution` and `Action, Event and State` from `Puzzles.NoughtsCrosses`
+1. Import `Puzzler.Solution` and `Action`, `Event` and `State` from `Puzzles.NoughtsCrosses`
 1. Define a `solution : Solution Memory Event Action` function, and export. 
 
 ```elm

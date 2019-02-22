@@ -126,7 +126,6 @@ run puzzle solution =
                 { title = "Puzzler"
                 , body =
                     [ puzzle.view model.state |> Html.map NoOp
-                    , Html.pre [] [ Debug.toString model |> Html.text ]
                     ]
                 }
         , update =

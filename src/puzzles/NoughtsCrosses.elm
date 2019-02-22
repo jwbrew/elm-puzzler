@@ -27,7 +27,7 @@ type alias State =
 
 handleTick : State -> Tick -> ( State, Maybe Event )
 handleTick state tick =
-    if tick == 2 && List.isEmpty state then
+    if tick == 1 && List.isEmpty state then
         takeGo state
 
     else

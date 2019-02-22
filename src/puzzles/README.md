@@ -2,7 +2,8 @@
 
 ## NoughtsCrosses
 
-A simple noughts & crosses simulation.
+A simple noughts & crosses simulation. Your opponent is 0, you are X.
+Your opponent moves first, but has a pretty rubbish strategy.
 
 ```elm
 type Action

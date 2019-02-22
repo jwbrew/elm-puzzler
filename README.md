@@ -84,3 +84,34 @@ opponent is 0, you are X. Your opponent moves first, but has a pretty rubbish
 strategy.
 
 The demo solution always loses. Try to find a way to make it win.
+
+#### Writing your own solution
+1. Create a file in src/solutions eg `src/solutions/MyNoughtsCrossesSolution.elm`
+1. Import `Puzzler.Solution` and `Action, Event and State` from `Puzzles.NoughtsCrosses`
+1. Define a `solution : Solution Memory Event Action` function, and export. 
+
+```elm
+module Solutions.MyNoughtsCrossesSolution exposing (solution)
+
+import Puzzler exposing (Solution)
+import Puzzles.NoughtsCrosses exposing (Action(..), Event(..), State)
+
+
+type alias Memory =
+    ...
+
+
+takeGo : Memory -> Event -> ( Memory, Maybe Action )
+takeGo memory (OpponentMove x y) =
+    ...
+
+
+solution : Solution Memory Event Action
+solution =
+    { init = []
+    , handleEvent = takeGo
+    }
+```
+
+4. Modify `import Solutions.NoughtsCrosses exposing (solution)` in `Main.elm` to import your solution
+4. Run as above!

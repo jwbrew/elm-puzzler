@@ -1,9 +1,9 @@
 module Main exposing (main)
 
-import Puzzle
+import Puzzler
 import Puzzles.NoughtsCrosses exposing (puzzle)
-import Puzzles.NoughtsCrosses.Solutions.Demo exposing (solution)
+import Solutions.NoughtsCrosses exposing (solution)
 
 
 main =
-    Puzzle.run puzzle solution
+    Puzzler.run puzzle solution

@@ -1,4 +1,4 @@
-module Puzzle exposing (Puzzle, Solution, Tick, run)
+module Puzzler exposing (Puzzle, Solution, Tick, run)
 
 import Browser
 import Html exposing (Html)

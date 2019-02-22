@@ -4926,17 +4926,17 @@ function _Time_getZoneName()
 		callback(_Scheduler_succeed(name));
 	});
 }
-var author$project$Puzzle$NoOp = function (a) {
+var author$project$Puzzler$NoOp = function (a) {
 	return {$: 'NoOp', a: a};
 };
-var author$project$Puzzle$Tick = function (a) {
+var author$project$Puzzler$Tick = function (a) {
 	return {$: 'Tick', a: a};
 };
 var elm$core$Basics$apR = F2(
 	function (x, f) {
 		return f(x);
 	});
-var author$project$Puzzle$handler = F4(
+var author$project$Puzzler$handler = F4(
 	function (handleAction, handleEvent, model, _n0) {
 		var state = _n0.a;
 		var maybeEvent = _n0.b;
@@ -4955,7 +4955,7 @@ var author$project$Puzzle$handler = F4(
 			} else {
 				var action = maybeAction.a;
 				return A4(
-					author$project$Puzzle$handler,
+					author$project$Puzzler$handler,
 					handleAction,
 					handleEvent,
 					model_,
@@ -9900,7 +9900,7 @@ var elm$time$Time$every = F2(
 		return elm$time$Time$subscription(
 			A2(elm$time$Time$Every, interval, tagger));
 	});
-var author$project$Puzzle$run = F2(
+var author$project$Puzzler$run = F2(
 	function (puzzle, solution) {
 		return elm$browser$Browser$document(
 			{
@@ -9910,7 +9910,7 @@ var author$project$Puzzle$run = F2(
 						elm$core$Platform$Cmd$none);
 				},
 				subscriptions: function (_n1) {
-					return A2(elm$time$Time$every, 1000, author$project$Puzzle$Tick);
+					return A2(elm$time$Time$every, 1000, author$project$Puzzler$Tick);
 				},
 				update: F2(
 					function (msg, model) {
@@ -9918,7 +9918,7 @@ var author$project$Puzzle$run = F2(
 							case 'Action':
 								var action = msg.a;
 								var model_ = A4(
-									author$project$Puzzle$handler,
+									author$project$Puzzler$handler,
 									puzzle.handleAction,
 									solution.handleEvent,
 									model,
@@ -9927,7 +9927,7 @@ var author$project$Puzzle$run = F2(
 							case 'Tick':
 								var tick_ = model.tick + 1;
 								var model_ = A4(
-									author$project$Puzzle$handler,
+									author$project$Puzzler$handler,
 									puzzle.handleAction,
 									solution.handleEvent,
 									model,
@@ -9947,7 +9947,7 @@ var author$project$Puzzle$run = F2(
 							[
 								A2(
 								elm$html$Html$map,
-								author$project$Puzzle$NoOp,
+								author$project$Puzzler$NoOp,
 								puzzle.view(model.state)),
 								A2(
 								elm$html$Html$pre,
@@ -9963,80 +9963,254 @@ var author$project$Puzzle$run = F2(
 				}
 			});
 	});
-var author$project$Puzzles$NoughtsCrosses$Nought = {$: 'Nought'};
-var author$project$Puzzles$NoughtsCrosses$Cross = {$: 'Cross'};
-var author$project$Puzzles$NoughtsCrosses$Go = F3(
-	function (x, y, piece) {
-		return {piece: piece, x: x, y: y};
+var author$project$Puzzles$NoughtsCrosses$MoveTaken = F2(
+	function (a, b) {
+		return {$: 'MoveTaken', a: a, b: b};
 	});
-var author$project$Puzzles$NoughtsCrosses$MoveTaken = {$: 'MoveTaken'};
-var author$project$Puzzles$NoughtsCrosses$takeMove = function (state) {
-	return _Utils_update(
-		state,
-		{
-			gos: A2(
+var elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2(elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var elm$core$List$head = function (list) {
+	if (list.b) {
+		var x = list.a;
+		var xs = list.b;
+		return elm$core$Maybe$Just(x);
+	} else {
+		return elm$core$Maybe$Nothing;
+	}
+};
+var elm$core$List$any = F2(
+	function (isOkay, list) {
+		any:
+		while (true) {
+			if (!list.b) {
+				return false;
+			} else {
+				var x = list.a;
+				var xs = list.b;
+				if (isOkay(x)) {
+					return true;
+				} else {
+					var $temp$isOkay = isOkay,
+						$temp$list = xs;
+					isOkay = $temp$isOkay;
+					list = $temp$list;
+					continue any;
+				}
+			}
+		}
+	});
+var elm$core$List$member = F2(
+	function (x, xs) {
+		return A2(
+			elm$core$List$any,
+			function (a) {
+				return _Utils_eq(a, x);
+			},
+			xs);
+	});
+var author$project$Puzzles$NoughtsCrosses$takeGo = function (state) {
+	var taken = A2(
+		elm$core$List$map,
+		function ($) {
+			return $.coords;
+		},
+		state);
+	var options = _List_fromArray(
+		[
+			_Utils_Tuple2(0, 0),
+			_Utils_Tuple2(0, 1),
+			_Utils_Tuple2(0, 2),
+			_Utils_Tuple2(1, 0),
+			_Utils_Tuple2(1, 1),
+			_Utils_Tuple2(1, 2),
+			_Utils_Tuple2(2, 0),
+			_Utils_Tuple2(2, 1),
+			_Utils_Tuple2(2, 2)
+		]);
+	var maybeNext = elm$core$List$head(
+		A2(
+			elm$core$List$filter,
+			function (c) {
+				return !A2(elm$core$List$member, c, taken);
+			},
+			options));
+	if (maybeNext.$ === 'Just') {
+		var _n1 = maybeNext.a;
+		var x = _n1.a;
+		var y = _n1.b;
+		return _Utils_Tuple2(
+			A2(
 				elm$core$List$cons,
-				A3(author$project$Puzzles$NoughtsCrosses$Go, 1, 2, author$project$Puzzles$NoughtsCrosses$Nought),
-				state.gos)
-		});
+				{
+					coords: _Utils_Tuple2(x, y),
+					us: true
+				},
+				state),
+			elm$core$Maybe$Just(
+				A2(author$project$Puzzles$NoughtsCrosses$MoveTaken, x, y)));
+	} else {
+		return _Utils_Tuple2(state, elm$core$Maybe$Nothing);
+	}
 };
 var author$project$Puzzles$NoughtsCrosses$handleAction = F2(
 	function (state, _n0) {
 		var x = _n0.a;
 		var y = _n0.b;
-		return (elm$core$List$length(state.gos) === 9) ? _Utils_Tuple2(state, elm$core$Maybe$Nothing) : _Utils_Tuple2(
-			author$project$Puzzles$NoughtsCrosses$takeMove(
-				_Utils_update(
-					state,
-					{
-						gos: A2(
-							elm$core$List$cons,
-							A3(author$project$Puzzles$NoughtsCrosses$Go, x, y, author$project$Puzzles$NoughtsCrosses$Cross),
-							state.gos)
-					})),
-			elm$core$Maybe$Just(author$project$Puzzles$NoughtsCrosses$MoveTaken));
+		return (elm$core$List$length(state) === 9) ? _Utils_Tuple2(state, elm$core$Maybe$Nothing) : author$project$Puzzles$NoughtsCrosses$takeGo(
+			A2(
+				elm$core$List$cons,
+				{
+					coords: _Utils_Tuple2(x, y),
+					us: false
+				},
+				state));
 	});
 var author$project$Puzzles$NoughtsCrosses$handleTick = F2(
 	function (state, tick) {
-		return ((tick === 2) && elm$core$List$isEmpty(state.gos)) ? _Utils_Tuple2(
-			author$project$Puzzles$NoughtsCrosses$takeMove(state),
-			elm$core$Maybe$Just(author$project$Puzzles$NoughtsCrosses$MoveTaken)) : _Utils_Tuple2(state, elm$core$Maybe$Nothing);
+		return ((tick === 2) && elm$core$List$isEmpty(state)) ? author$project$Puzzles$NoughtsCrosses$takeGo(state) : _Utils_Tuple2(state, elm$core$Maybe$Nothing);
 	});
+var elm$html$Html$td = _VirtualDom_node('td');
+var author$project$Puzzles$NoughtsCrosses$cell = F3(
+	function (state, x, y) {
+		return A2(
+			elm$html$Html$td,
+			_List_Nil,
+			_List_fromArray(
+				[
+					elm$html$Html$text(
+					function () {
+						var _n0 = elm$core$List$head(
+							A2(
+								elm$core$List$filter,
+								function (go) {
+									return _Utils_eq(go.coords.a, x) && _Utils_eq(go.coords.b, y);
+								},
+								state));
+						if (_n0.$ === 'Just') {
+							var go = _n0.a;
+							return go.us ? '0' : 'X';
+						} else {
+							return '';
+						}
+					}())
+				]));
+	});
+var elm$html$Html$table = _VirtualDom_node('table');
+var elm$html$Html$tbody = _VirtualDom_node('tbody');
+var elm$html$Html$tr = _VirtualDom_node('tr');
 var author$project$Puzzles$NoughtsCrosses$view = function (state) {
 	return A2(
-		elm$html$Html$pre,
+		elm$html$Html$table,
 		_List_Nil,
 		_List_fromArray(
 			[
-				elm$html$Html$text(
-				elm$core$Debug$toString(state))
+				A2(
+				elm$html$Html$tbody,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						elm$html$Html$tr,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 0, 0),
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 0, 1),
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 0, 2)
+							])),
+						A2(
+						elm$html$Html$tr,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 1, 0),
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 1, 1),
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 1, 2)
+							])),
+						A2(
+						elm$html$Html$tr,
+						_List_Nil,
+						_List_fromArray(
+							[
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 2, 0),
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 2, 1),
+								A3(author$project$Puzzles$NoughtsCrosses$cell, state, 2, 2)
+							]))
+					]))
 			]));
 };
-var author$project$Puzzles$NoughtsCrosses$puzzle = {
-	handleAction: author$project$Puzzles$NoughtsCrosses$handleAction,
-	handleTick: author$project$Puzzles$NoughtsCrosses$handleTick,
-	init: {gos: _List_Nil, self: author$project$Puzzles$NoughtsCrosses$Nought, start: author$project$Puzzles$NoughtsCrosses$Nought},
-	view: author$project$Puzzles$NoughtsCrosses$view
-};
+var author$project$Puzzles$NoughtsCrosses$puzzle = {handleAction: author$project$Puzzles$NoughtsCrosses$handleAction, handleTick: author$project$Puzzles$NoughtsCrosses$handleTick, init: _List_Nil, view: author$project$Puzzles$NoughtsCrosses$view};
 var author$project$Puzzles$NoughtsCrosses$TakeMove = F2(
 	function (a, b) {
 		return {$: 'TakeMove', a: a, b: b};
 	});
-var author$project$Puzzles$NoughtsCrosses$Solutions$Demo$solution = {
-	handleEvent: F2(
-		function (memory, event) {
-			return (memory.step < 9) ? _Utils_Tuple2(
-				_Utils_update(
-					memory,
-					{step: memory.step + 1}),
+var author$project$Solutions$NoughtsCrosses$takeGo = F2(
+	function (memory, _n0) {
+		var x = _n0.a;
+		var y = _n0.b;
+		var options = _List_fromArray(
+			[
+				_Utils_Tuple2(0, 0),
+				_Utils_Tuple2(0, 1),
+				_Utils_Tuple2(0, 2),
+				_Utils_Tuple2(1, 0),
+				_Utils_Tuple2(1, 1),
+				_Utils_Tuple2(1, 2),
+				_Utils_Tuple2(2, 0),
+				_Utils_Tuple2(2, 1),
+				_Utils_Tuple2(2, 2)
+			]);
+		var memory_ = A2(
+			elm$core$List$cons,
+			{
+				coords: _Utils_Tuple2(x, y),
+				us: false
+			},
+			memory);
+		var taken = A2(
+			elm$core$List$map,
+			function ($) {
+				return $.coords;
+			},
+			memory_);
+		var maybeNext = elm$core$List$head(
+			A2(
+				elm$core$List$filter,
+				function (c) {
+					return !A2(elm$core$List$member, c, taken);
+				},
+				options));
+		if (maybeNext.$ === 'Just') {
+			var _n2 = maybeNext.a;
+			var x_ = _n2.a;
+			var y_ = _n2.b;
+			return _Utils_Tuple2(
+				A2(
+					elm$core$List$cons,
+					{
+						coords: _Utils_Tuple2(x_, y_),
+						us: true
+					},
+					memory_),
 				elm$core$Maybe$Just(
-					A2(author$project$Puzzles$NoughtsCrosses$TakeMove, 0, 0))) : _Utils_Tuple2(memory, elm$core$Maybe$Nothing);
-		}),
-	init: {step: 0}
-};
-var author$project$Main$main = A2(author$project$Puzzle$run, author$project$Puzzles$NoughtsCrosses$puzzle, author$project$Puzzles$NoughtsCrosses$Solutions$Demo$solution);
+					A2(author$project$Puzzles$NoughtsCrosses$TakeMove, x_, y_)));
+		} else {
+			return _Utils_Tuple2(memory_, elm$core$Maybe$Nothing);
+		}
+	});
+var author$project$Solutions$NoughtsCrosses$solution = {handleEvent: author$project$Solutions$NoughtsCrosses$takeGo, init: _List_Nil};
+var author$project$Main$main = A2(author$project$Puzzler$run, author$project$Puzzles$NoughtsCrosses$puzzle, author$project$Solutions$NoughtsCrosses$solution);
 _Platform_export({'Main':{'init':author$project$Main$main(
-	elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.0"},"types":{"message":"Puzzle.Msg Puzzles.NoughtsCrosses.Action","aliases":{},"unions":{"Puzzle.Msg":{"args":["action"],"tags":{"Tick":["Time.Posix"],"Action":["action"],"NoOp":["()"]}},"Puzzles.NoughtsCrosses.Action":{"args":[],"tags":{"TakeMove":["Basics.Int","Basics.Int"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Time.Posix":{"args":[],"tags":{"Posix":["Basics.Int"]}}}}})}});}(this));
+	elm$json$Json$Decode$succeed(_Utils_Tuple0))({"versions":{"elm":"0.19.0"},"types":{"message":"Puzzler.Msg Puzzles.NoughtsCrosses.Action","aliases":{},"unions":{"Puzzler.Msg":{"args":["action"],"tags":{"Tick":["Time.Posix"],"Action":["action"],"NoOp":["()"]}},"Puzzles.NoughtsCrosses.Action":{"args":[],"tags":{"TakeMove":["Basics.Int","Basics.Int"]}},"Basics.Int":{"args":[],"tags":{"Int":[]}},"Time.Posix":{"args":[],"tags":{"Posix":["Basics.Int"]}}}}})}});}(this));
 
 var app = Elm.Main.init({ node: document.getElementById("elm-f0111bc4e658d0f98db96260c16f7e49") });
 if (document.getElementById("elm-f0111bc4e658d0f98db96260c16f7e49"))

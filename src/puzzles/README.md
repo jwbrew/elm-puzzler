@@ -7,7 +7,7 @@ Your opponent moves first, but has a pretty rubbish strategy.
 
 ```elm
 type Action
-    = TakeMove Int Int
+    = PlayerMove Int Int
 ```
 A single action that lets the Solution play a move
 

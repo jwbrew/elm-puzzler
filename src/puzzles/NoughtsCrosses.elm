@@ -5,7 +5,7 @@ import Puzzler exposing (Puzzle, Tick)
 
 
 type Action
-    = TakeMove Int Int
+    = PlayerMove Int Int
 
 
 type Event
@@ -35,7 +35,7 @@ handleTick state tick =
 
 
 handleAction : State -> Action -> ( State, Maybe Event )
-handleAction state (TakeMove x y) =
+handleAction state (PlayerMove x y) =
     if List.length state == 9 then
         ( state, Nothing )
 

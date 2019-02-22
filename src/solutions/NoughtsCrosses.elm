@@ -39,7 +39,7 @@ takeGo memory (OpponentMove x y) =
     in
     case maybeNext of
         Just ( x_, y_ ) ->
-            ( { us = True, coords = ( x_, y_ ) } :: memory_, TakeMove x_ y_ |> Just )
+            ( { us = True, coords = ( x_, y_ ) } :: memory_, PlayerMove x_ y_ |> Just )
 
         Nothing ->
             ( memory_, Nothing )

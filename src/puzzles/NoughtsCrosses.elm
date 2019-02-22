@@ -9,7 +9,7 @@ type Action
 
 
 type Event
-    = MoveTaken Int Int
+    = OpponentMove Int Int
 
 
 type Piece
@@ -69,7 +69,7 @@ takeGo state =
     in
     case maybeNext of
         Just ( x, y ) ->
-            ( { us = True, coords = ( x, y ) } :: state, Just <| MoveTaken x y )
+            ( { us = True, coords = ( x, y ) } :: state, Just <| OpponentMove x y )
 
         Nothing ->
             ( state, Nothing )

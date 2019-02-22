@@ -13,7 +13,7 @@ type alias Memory =
 
 
 takeGo : Memory -> Event -> ( Memory, Maybe Action )
-takeGo memory (MoveTaken x y) =
+takeGo memory (OpponentMove x y) =
     let
         options =
             [ ( 0, 0 )

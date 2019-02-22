@@ -14,6 +14,6 @@ A single action that lets the Solution play a move
 
 ```elm
 type Event
-    = MoveTaken Int Int
+    = OpponentMove Int Int
 ```
 A single Event to notify the solution that the opponent has moved

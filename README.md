@@ -51,7 +51,7 @@ The main game logic then is encapsulated in a `handleEvent` function, which
 receives the current `memory`, a new puzzle `event`, and returns a new `memory`
 with an optional `action`, if required.
 
-## Getting Started
+## Getting Started
 
 [Install Elm](https://guide.elm-lang.org/install.html)
 

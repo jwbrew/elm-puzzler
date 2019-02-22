@@ -2,7 +2,8 @@
 A framework for creating puzzles & solutions written in Elm, to help newcomers
 learn the language and then move on to building their own puzzles.
 
-N.B. This is *very* much a work in progress. Inspired by [Elm London](https://www.meetup.com/Elm-London-Meetup/)
+N.B. This is *very* much a work in progress. Inspired at and by 
+[Elm London](https://www.meetup.com/Elm-London-Meetup/)
 and intended as an educational tool. Contributions immensely welcome.
 
 ### A Puzzle

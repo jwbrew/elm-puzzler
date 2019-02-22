@@ -53,7 +53,9 @@ with an optional `action`, if required.
 ## Getting Started
 
 [Install Elm](https://guide.elm-lang.org/install.html)
+
 `git clone jwbrew/elm-puzzler`
+
 cd elm-puzzler
 
 ### Running A Puzzle

@@ -55,7 +55,7 @@ with an optional `action`, if required.
 
 [Install Elm](https://guide.elm-lang.org/install.html)
 
-`git clone jwbrew/elm-puzzler`
+`git clone https://github.com/jwbrew/elm-puzzler.git`
 
 cd elm-puzzler
 
@@ -74,7 +74,7 @@ debugger when developing solutions.
 
 `npm i -g elm-live`
 
-`elm-live Main.elm -- --debug`
+`elm reactor`
 
 ## Puzzles
 

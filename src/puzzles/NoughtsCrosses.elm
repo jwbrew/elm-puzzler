@@ -12,11 +12,6 @@ type Event
     = OpponentMove Int Int
 
 
-type Piece
-    = Nought
-    | Cross
-
-
 type alias Go =
     { us : Bool, coords : ( Int, Int ) }
 
@@ -27,11 +22,19 @@ type alias State =
 
 handleTick : State -> Tick -> ( State, Maybe Event )
 handleTick state tick =
-    if tick == 1 && List.isEmpty state then
-        takeGo state
+    case ( tick, state ) of
+        ( 1, [] ) ->
+            takeGo state
 
-    else
-        ( state, Nothing )
+        ( _, { us, coords } :: _ ) ->
+            if us then
+                ( state, Just <| OpponentMove (Tuple.first coords) (Tuple.second coords) )
+
+            else
+                takeGo state
+
+        _ ->
+            ( state, Nothing )
 
 
 handleAction : State -> Action -> ( State, Maybe Event )
@@ -40,9 +43,10 @@ handleAction state (PlayerMove x y) =
         ( state, Nothing )
 
     else
-        { us = False, coords = ( x, y ) }
+        ( { us = False, coords = ( x, y ) }
             :: state
-            |> takeGo
+        , Nothing
+        )
 
 
 takeGo : State -> ( State, Maybe Event )
@@ -69,7 +73,7 @@ takeGo state =
     in
     case maybeNext of
         Just ( x, y ) ->
-            ( { us = True, coords = ( x, y ) } :: state, Just <| OpponentMove x y )
+            ( { us = True, coords = ( x, y ) } :: state, Nothing )
 
         Nothing ->
             ( state, Nothing )

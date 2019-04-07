@@ -88,7 +88,7 @@ handler :
 handler handleAction handleEvent model ( state, maybeEvent ) =
     case maybeEvent of
         Nothing ->
-            model
+            { model | state = state }
 
         Just event ->
             let

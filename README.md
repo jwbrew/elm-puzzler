@@ -2,7 +2,7 @@
 A framework for creating puzzles & solutions written in Elm, to help newcomers
 learn the language and then move on to building their own puzzles.
 
-N.B. This is *very* much a work in progress. Inspired at and by 
+N.B. This is *very* much a work in progress. Inspired at and by
 [Elm London](https://www.meetup.com/Elm-London-Meetup/)
 and intended as an educational tool. Contributions immensely welcome.
 
@@ -32,7 +32,7 @@ offer
 The `view` function converts the current state into a view for the user.
 The `handleTick` function allows the puzzle to update the game state and emit
 events asynchronously
-The `handleAction` function provides a synchroinous response to a Solution's
+The `handleAction` function provides a synchronous response to a Solution's
 Action
 
 
@@ -87,8 +87,8 @@ The demo solution always loses. Try to find a way to make it win.
 
 #### Writing your own solution
 1. Create a file in src/solutions eg `src/solutions/MyNoughtsCrossesSolution.elm`
-1. Import `Puzzler.Solution` and `Action`, `Event` and `State` from `Puzzles.NoughtsCrosses`
-1. Define a `solution : Solution Memory Event Action` function, and export. 
+2. Import `Puzzler.Solution` and `Action`, `Event` and `State` from `Puzzles.NoughtsCrosses`
+3. Define a `solution : Solution Memory Event Action` function, and export.
 
 ```elm
 module Solutions.MyNoughtsCrossesSolution exposing (solution)
@@ -114,4 +114,4 @@ solution =
 ```
 
 4. Modify `import Solutions.NoughtsCrosses exposing (solution)` in `Main.elm` to import your solution
-4. Run as above!
+5. Run as above!
